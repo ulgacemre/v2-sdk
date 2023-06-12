@@ -6,9 +6,9 @@ export declare class CurrencyAmount extends Fraction {
     readonly currency: Currency;
     /**
      * Helper that calls the constructor with the ETHER currency
-     * @param amount ether amount in wei
+     * @param amount omc amount in wei
      */
-    static ether(amount: BigintIsh): CurrencyAmount;
+    static omc(amount: BigintIsh): CurrencyAmount;
     protected constructor(currency: Currency, amount: BigintIsh);
     get raw(): JSBI;
     add(other: CurrencyAmount): CurrencyAmount;
