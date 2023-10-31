@@ -65,3 +65,4 @@ export const WJNS = {
     'Wrapped JNS'
   )
 }
+
