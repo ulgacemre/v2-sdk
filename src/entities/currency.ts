@@ -16,7 +16,7 @@ export class Currency {
   /**
    * The only instance of the base class `Currency`.
    */
-  public static readonly OMC: Currency = new Currency(18, 'OMC', 'OMCHAIN Coin')
+  public static readonly JNS: Currency = new Currency(18, 'JNS', 'JANUS Coin')
 
   /**
    * Constructs an instance of the base class `Currency`. The only instance of the base class `Currency` is `Currency.ETHER`.
@@ -33,5 +33,5 @@ export class Currency {
   }
 }
 
-const OMC = Currency.OMC
-export { OMC }
+const JNS = Currency.JNS
+export { JNS }

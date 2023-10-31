@@ -56,12 +56,12 @@ export function currencyEquals(currencyA: Currency, currencyB: Currency): boolea
   }
 }
 
-export const WOMC = {
-  [ChainId.OMCHAIN]: new Token(
-    ChainId.OMCHAIN,
-    '0xeDF2261051b20Ce673A836673F609e8cF3d55306',
+export const WJNS = {
+  [ChainId.JANUS]: new Token(
+    ChainId.JANUS,
+    '0x0a724DE47B01e2B8DAc55a022651D02326b26e3F',
     18,
-    'WOMC',
-    'Wrapped OMC'
+    'WJNS',
+    'Wrapped JNS'
   )
 }

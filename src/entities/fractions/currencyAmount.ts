@@ -1,5 +1,5 @@
 import { currencyEquals } from '../token'
-import { Currency, OMC } from '../currency'
+import { Currency, JNS } from '../currency'
 import invariant from 'tiny-invariant'
 import JSBI from 'jsbi'
 import _Big from 'big.js'
@@ -16,10 +16,10 @@ export class CurrencyAmount extends Fraction {
 
   /**
    * Helper that calls the constructor with the ETHER currency
-   * @param amount omc amount in wei
+   * @param amount jns amount in wei
    */
-  public static omc(amount: BigintIsh): CurrencyAmount {
-    return new CurrencyAmount(OMC, amount)
+  public static jns(amount: BigintIsh): CurrencyAmount {
+    return new CurrencyAmount(JNS, amount)
   }
 
   // amount _must_ be raw, i.e. in the native representation

@@ -2,7 +2,7 @@ import invariant from 'tiny-invariant'
 
 import { ChainId, ONE, TradeType, ZERO } from '../constants'
 import { sortedInsert } from '../utils'
-import { Currency, OMC } from './currency'
+import { Currency, JNS } from './currency'
 import { CurrencyAmount } from './fractions/currencyAmount'
 import { Fraction } from './fractions/fraction'
 import { Percent } from './fractions/percent'
@@ -10,7 +10,7 @@ import { Price } from './fractions/price'
 import { TokenAmount } from './fractions/tokenAmount'
 import { Pair } from './pair'
 import { Route } from './route'
-import { currencyEquals, Token, WOMC } from './token'
+import { currencyEquals, Token, WJNS } from './token'
 
 /**
  * Returns the percent difference between the mid price and the execution price, i.e. price impact.
@@ -84,18 +84,18 @@ export interface BestTradeOptions {
 
 /**
  * Given a currency amount and a chain ID, returns the equivalent representation as the token amount.
- * In other words, if the currency is ETHER, returns the WOMC token amount for the given chain. Otherwise, returns
+ * In other words, if the currency is ETHER, returns the WJNS token amount for the given chain. Otherwise, returns
  * the input currency amount.
  */
 function wrappedAmount(currencyAmount: CurrencyAmount, chainId: ChainId): TokenAmount {
   if (currencyAmount instanceof TokenAmount) return currencyAmount
-  if (currencyAmount.currency === OMC) return new TokenAmount(WOMC[chainId], currencyAmount.raw)
+  if (currencyAmount.currency === JNS) return new TokenAmount(WJNS[chainId], currencyAmount.raw)
   invariant(false, 'CURRENCY')
 }
 
 function wrappedCurrency(currency: Currency, chainId: ChainId): Token {
   if (currency instanceof Token) return currency
-  if (currency === OMC) return WOMC[chainId]
+  if (currency === JNS) return WJNS[chainId]
   invariant(false, 'CURRENCY')
 }
 
@@ -179,14 +179,14 @@ export class Trade {
     this.inputAmount =
       tradeType === TradeType.EXACT_INPUT
         ? amount
-        : route.input === OMC
-        ? CurrencyAmount.omc(amounts[0].raw)
+        : route.input === JNS
+        ? CurrencyAmount.jns(amounts[0].raw)
         : amounts[0]
     this.outputAmount =
       tradeType === TradeType.EXACT_OUTPUT
         ? amount
-        : route.output === OMC
-        ? CurrencyAmount.omc(amounts[amounts.length - 1].raw)
+        : route.output === JNS
+        ? CurrencyAmount.jns(amounts[amounts.length - 1].raw)
         : amounts[amounts.length - 1]
     this.executionPrice = new Price(
       this.inputAmount.currency,
@@ -213,7 +213,7 @@ export class Trade {
         .multiply(this.outputAmount.raw).quotient
       return this.outputAmount instanceof TokenAmount
         ? new TokenAmount(this.outputAmount.token, slippageAdjustedAmountOut)
-        : CurrencyAmount.omc(slippageAdjustedAmountOut)
+        : CurrencyAmount.jns(slippageAdjustedAmountOut)
     }
   }
 
@@ -229,7 +229,7 @@ export class Trade {
       const slippageAdjustedAmountIn = new Fraction(ONE).add(slippageTolerance).multiply(this.inputAmount.raw).quotient
       return this.inputAmount instanceof TokenAmount
         ? new TokenAmount(this.inputAmount.token, slippageAdjustedAmountIn)
-        : CurrencyAmount.omc(slippageAdjustedAmountIn)
+        : CurrencyAmount.jns(slippageAdjustedAmountIn)
     }
   }
 
@@ -279,7 +279,7 @@ export class Trade {
       let amountOut: TokenAmount
       try {
         ;[amountOut] = pair.getOutputAmount(amountIn)
-      } catch (error) {
+      } catch (error:any) {
         // input too low
         if (error.isInsufficientInputAmountError) {
           continue
@@ -367,7 +367,7 @@ export class Trade {
       let amountIn: TokenAmount
       try {
         ;[amountIn] = pair.getInputAmount(amountOut)
-      } catch (error) {
+      } catch (error: any) {
         // not enough liquidity in this pair
         if (error.isInsufficientReservesError) {
           continue
