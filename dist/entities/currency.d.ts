@@ -10,7 +10,7 @@ export declare class Currency {
     /**
      * The only instance of the base class `Currency`.
      */
-    static readonly OMC: Currency;
+    static readonly JNS: Currency;
     /**
      * Constructs an instance of the base class `Currency`. The only instance of the base class `Currency` is `Currency.ETHER`.
      * @param decimals decimals of the currency
@@ -19,5 +19,5 @@ export declare class Currency {
      */
     protected constructor(decimals: number, symbol?: string, name?: string);
 }
-declare const OMC: Currency;
-export { OMC };
+declare const JNS: Currency;
+export { JNS };

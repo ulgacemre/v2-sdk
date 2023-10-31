@@ -20,7 +20,7 @@ var IUniswapV2Pair = _interopDefault(require('@uniswap/v2-core/build/IUniswapV2P
 var _SOLIDITY_TYPE_MAXIMA;
 
 (function (ChainId) {
-  ChainId[ChainId["OMCHAIN"] = 21816] = "OMCHAIN";
+  ChainId[ChainId["JANUS"] = 66987] = "JANUS";
 })(exports.ChainId || (exports.ChainId = {}));
 
 (function (TradeType) {
@@ -34,9 +34,10 @@ var _SOLIDITY_TYPE_MAXIMA;
   Rounding[Rounding["ROUND_UP"] = 2] = "ROUND_UP";
 })(exports.Rounding || (exports.Rounding = {}));
 
-var FACTORY_ADDRESS = '0xe683C94A31cf58D8eCbD642E4687257DA53142ea';
-var INIT_CODE_HASH = '0x417eb21fb70cce70b5ecd83247eb73d233d19eb7568baed69c3e3214e36dd6d2';
-var MINIMUM_LIQUIDITY = /*#__PURE__*/JSBI.BigInt(1000); // exports for internal consumption
+var FACTORY_ADDRESS = '0x2a6a22fd8A618A16DB300C11640c2e3cE9327a4F';
+var INIT_CODE_HASH = '0x6d35302494f4706c584e902f09e076a3d1c85caf3818818d6ca92eb0af8d1183'; // Adjust min liquidity to 1
+
+var MINIMUM_LIQUIDITY = /*#__PURE__*/JSBI.BigInt(1); // exports for internal consumption
 
 var ZERO = /*#__PURE__*/JSBI.BigInt(0);
 var ONE = /*#__PURE__*/JSBI.BigInt(1);
@@ -368,10 +369,10 @@ function Currency(decimals, symbol, name) {
  * The only instance of the base class `Currency`.
  */
 
-Currency.OMC = /*#__PURE__*/new Currency(18, 'OMC', 'OMCHAIN Coin');
-var OMC = Currency.OMC;
+Currency.JNS = /*#__PURE__*/new Currency(18, 'JNS', 'JANUS Coin');
+var JNS = Currency.JNS;
 
-var _WOMC;
+var _WJNS;
 /**
  * Represents an ERC20 token with a unique address and some metadata.
  */
@@ -434,7 +435,7 @@ function currencyEquals(currencyA, currencyB) {
     return currencyA === currencyB;
   }
 }
-var WOMC = (_WOMC = {}, _WOMC[exports.ChainId.OMCHAIN] = /*#__PURE__*/new Token(exports.ChainId.OMCHAIN, '0xeDF2261051b20Ce673A836673F609e8cF3d55306', 18, 'WOMC', 'Wrapped OMC'), _WOMC);
+var WJNS = (_WJNS = {}, _WJNS[exports.ChainId.JANUS] = /*#__PURE__*/new Token(exports.ChainId.JANUS, '0x0a724DE47B01e2B8DAc55a022651D02326b26e3F', 18, 'WJNS', 'Wrapped JNS'), _WJNS);
 
 var _toSignificantRoundin, _toFixedRounding;
 var Decimal = /*#__PURE__*/toFormat(_Decimal);
@@ -574,12 +575,12 @@ var CurrencyAmount = /*#__PURE__*/function (_Fraction) {
   }
   /**
    * Helper that calls the constructor with the ETHER currency
-   * @param amount omc amount in wei
+   * @param amount jns amount in wei
    */
 
 
-  CurrencyAmount.omc = function omc(amount) {
-    return new CurrencyAmount(OMC, amount);
+  CurrencyAmount.jns = function jns(amount) {
+    return new CurrencyAmount(JNS, amount);
   };
 
   var _proto = CurrencyAmount.prototype;
@@ -718,7 +719,7 @@ var Price = /*#__PURE__*/function (_Fraction) {
       return new TokenAmount(this.quoteCurrency, _Fraction.prototype.multiply.call(this, currencyAmount.raw).quotient);
     }
 
-    return CurrencyAmount.omc(_Fraction.prototype.multiply.call(this, currencyAmount.raw).quotient);
+    return CurrencyAmount.jns(_Fraction.prototype.multiply.call(this, currencyAmount.raw).quotient);
   };
 
   _proto.toSignificant = function toSignificant(significantDigits, format, rounding) {
@@ -953,9 +954,9 @@ var Route = /*#__PURE__*/function () {
     !pairs.every(function (pair) {
       return pair.chainId === pairs[0].chainId;
     }) ?  invariant(false, 'CHAIN_IDS')  : void 0;
-    !(input instanceof Token && pairs[0].involvesToken(input) || input === OMC && pairs[0].involvesToken(WOMC[pairs[0].chainId])) ?  invariant(false, 'INPUT')  : void 0;
-    !(typeof output === 'undefined' || output instanceof Token && pairs[pairs.length - 1].involvesToken(output) || output === OMC && pairs[pairs.length - 1].involvesToken(WOMC[pairs[0].chainId])) ?  invariant(false, 'OUTPUT')  : void 0;
-    var path = [input instanceof Token ? input : WOMC[pairs[0].chainId]];
+    !(input instanceof Token && pairs[0].involvesToken(input) || input === JNS && pairs[0].involvesToken(WJNS[pairs[0].chainId])) ?  invariant(false, 'INPUT')  : void 0;
+    !(typeof output === 'undefined' || output instanceof Token && pairs[pairs.length - 1].involvesToken(output) || output === JNS && pairs[pairs.length - 1].involvesToken(WJNS[pairs[0].chainId])) ?  invariant(false, 'OUTPUT')  : void 0;
+    var path = [input instanceof Token ? input : WJNS[pairs[0].chainId]];
 
     for (var _iterator = _createForOfIteratorHelperLoose(pairs.entries()), _step; !(_step = _iterator()).done;) {
       var _step$value = _step.value,
@@ -1077,19 +1078,19 @@ function tradeComparator(a, b) {
 }
 /**
  * Given a currency amount and a chain ID, returns the equivalent representation as the token amount.
- * In other words, if the currency is ETHER, returns the WOMC token amount for the given chain. Otherwise, returns
+ * In other words, if the currency is ETHER, returns the WJNS token amount for the given chain. Otherwise, returns
  * the input currency amount.
  */
 
 function wrappedAmount(currencyAmount, chainId) {
   if (currencyAmount instanceof TokenAmount) return currencyAmount;
-  if (currencyAmount.currency === OMC) return new TokenAmount(WOMC[chainId], currencyAmount.raw);
+  if (currencyAmount.currency === JNS) return new TokenAmount(WJNS[chainId], currencyAmount.raw);
     invariant(false, 'CURRENCY')  ;
 }
 
 function wrappedCurrency(currency, chainId) {
   if (currency instanceof Token) return currency;
-  if (currency === OMC) return WOMC[chainId];
+  if (currency === JNS) return WJNS[chainId];
     invariant(false, 'CURRENCY')  ;
 }
 /**
@@ -1135,8 +1136,8 @@ var Trade = /*#__PURE__*/function () {
 
     this.route = route;
     this.tradeType = tradeType;
-    this.inputAmount = tradeType === exports.TradeType.EXACT_INPUT ? amount : route.input === OMC ? CurrencyAmount.omc(amounts[0].raw) : amounts[0];
-    this.outputAmount = tradeType === exports.TradeType.EXACT_OUTPUT ? amount : route.output === OMC ? CurrencyAmount.omc(amounts[amounts.length - 1].raw) : amounts[amounts.length - 1];
+    this.inputAmount = tradeType === exports.TradeType.EXACT_INPUT ? amount : route.input === JNS ? CurrencyAmount.jns(amounts[0].raw) : amounts[0];
+    this.outputAmount = tradeType === exports.TradeType.EXACT_OUTPUT ? amount : route.output === JNS ? CurrencyAmount.jns(amounts[amounts.length - 1].raw) : amounts[amounts.length - 1];
     this.executionPrice = new Price(this.inputAmount.currency, this.outputAmount.currency, this.inputAmount.raw, this.outputAmount.raw);
     this.nextMidPrice = Price.fromRoute(new Route(nextPairs, route.input));
     this.priceImpact = computePriceImpact(route.midPrice, this.inputAmount, this.outputAmount);
@@ -1176,7 +1177,7 @@ var Trade = /*#__PURE__*/function () {
       return this.outputAmount;
     } else {
       var slippageAdjustedAmountOut = new Fraction(ONE).add(slippageTolerance).invert().multiply(this.outputAmount.raw).quotient;
-      return this.outputAmount instanceof TokenAmount ? new TokenAmount(this.outputAmount.token, slippageAdjustedAmountOut) : CurrencyAmount.omc(slippageAdjustedAmountOut);
+      return this.outputAmount instanceof TokenAmount ? new TokenAmount(this.outputAmount.token, slippageAdjustedAmountOut) : CurrencyAmount.jns(slippageAdjustedAmountOut);
     }
   }
   /**
@@ -1192,7 +1193,7 @@ var Trade = /*#__PURE__*/function () {
       return this.inputAmount;
     } else {
       var slippageAdjustedAmountIn = new Fraction(ONE).add(slippageTolerance).multiply(this.inputAmount.raw).quotient;
-      return this.inputAmount instanceof TokenAmount ? new TokenAmount(this.inputAmount.token, slippageAdjustedAmountIn) : CurrencyAmount.omc(slippageAdjustedAmountIn);
+      return this.inputAmount instanceof TokenAmount ? new TokenAmount(this.inputAmount.token, slippageAdjustedAmountIn) : CurrencyAmount.jns(slippageAdjustedAmountIn);
     }
   }
   /**
@@ -1384,10 +1385,10 @@ var Router = /*#__PURE__*/function () {
 
 
   Router.swapCallParameters = function swapCallParameters(trade, options) {
-    var omcIn = trade.inputAmount.currency === OMC;
-    var omcOut = trade.outputAmount.currency === OMC; // the router does not support both ether in and out
+    var jnsIn = trade.inputAmount.currency === JNS;
+    var jnsOut = trade.outputAmount.currency === JNS; // the router does not support both ether in and out
 
-    !!(omcIn && omcOut) ?  invariant(false, 'OMC_IN_OUT')  : void 0;
+    !!(jnsIn && jnsOut) ?  invariant(false, 'JNS_IN_OUT')  : void 0;
     !(!('ttl' in options) || options.ttl > 0) ?  invariant(false, 'TTL')  : void 0;
     var to = validateAndParseAddress(options.recipient);
     var amountIn = toHex(trade.maximumAmountIn(options.allowedSlippage));
@@ -1403,12 +1404,12 @@ var Router = /*#__PURE__*/function () {
 
     switch (trade.tradeType) {
       case exports.TradeType.EXACT_INPUT:
-        if (omcIn) {
+        if (jnsIn) {
           methodName = useFeeOnTransfer ? 'swapExactETHForTokensSupportingFeeOnTransferTokens' : 'swapExactETHForTokens'; // (uint amountOutMin, address[] calldata path, address to, uint deadline)
 
           args = [amountOut, path, to, deadline];
           value = amountIn;
-        } else if (omcOut) {
+        } else if (jnsOut) {
           methodName = useFeeOnTransfer ? 'swapExactTokensForETHSupportingFeeOnTransferTokens' : 'swapExactTokensForETH'; // (uint amountIn, uint amountOutMin, address[] calldata path, address to, uint deadline)
 
           args = [amountIn, amountOut, path, to, deadline];
@@ -1425,12 +1426,12 @@ var Router = /*#__PURE__*/function () {
       case exports.TradeType.EXACT_OUTPUT:
         !!useFeeOnTransfer ?  invariant(false, 'EXACT_OUT_FOT')  : void 0;
 
-        if (omcIn) {
+        if (jnsIn) {
           methodName = 'swapETHForExactTokens'; // (uint amountOut, address[] calldata path, address to, uint deadline)
 
           args = [amountOut, path, to, deadline];
           value = amountIn;
-        } else if (omcOut) {
+        } else if (jnsOut) {
           methodName = 'swapTokensForExactETH'; // (uint amountOut, uint amountInMax, address[] calldata path, address to, uint deadline)
 
           args = [amountOut, amountIn, path, to, deadline];
@@ -1493,7 +1494,7 @@ var ERC20 = [
 ];
 
 var _TOKEN_DECIMALS_CACHE;
-var TOKEN_DECIMALS_CACHE = (_TOKEN_DECIMALS_CACHE = {}, _TOKEN_DECIMALS_CACHE[exports.ChainId.OMCHAIN] = {
+var TOKEN_DECIMALS_CACHE = (_TOKEN_DECIMALS_CACHE = {}, _TOKEN_DECIMALS_CACHE[exports.ChainId.JANUS] = {
   '0xE0B7927c4aF23765Cb51314A0E0521A9645F0E2A': 9 // DGD
 
 }, _TOKEN_DECIMALS_CACHE);
@@ -1574,8 +1575,8 @@ exports.Fraction = Fraction;
 exports.INIT_CODE_HASH = INIT_CODE_HASH;
 exports.InsufficientInputAmountError = InsufficientInputAmountError;
 exports.InsufficientReservesError = InsufficientReservesError;
+exports.JNS = JNS;
 exports.MINIMUM_LIQUIDITY = MINIMUM_LIQUIDITY;
-exports.OMC = OMC;
 exports.Pair = Pair;
 exports.Percent = Percent;
 exports.Price = Price;
@@ -1584,7 +1585,7 @@ exports.Router = Router;
 exports.Token = Token;
 exports.TokenAmount = TokenAmount;
 exports.Trade = Trade;
-exports.WOMC = WOMC;
+exports.WJNS = WJNS;
 exports.currencyEquals = currencyEquals;
 exports.inputOutputComparator = inputOutputComparator;
 exports.tradeComparator = tradeComparator;
