@@ -387,7 +387,7 @@ function currencyEquals(currencyA, currencyB) {
     return currencyA === currencyB;
   }
 }
-var WJNS = (_WJNS = {}, _WJNS[exports.ChainId.JANUS] = /*#__PURE__*/new Token(exports.ChainId.JANUS, '0x0a724DE47B01e2B8DAc55a022651D02326b26e3F', 18, 'WJNS', 'Wrapped JNS'), _WJNS);
+var WJNS = (_WJNS = {}, _WJNS[exports.ChainId.JANUS] = /*#__PURE__*/new Token(exports.ChainId.JANUS, '0x8d0fB1c0b97b7729bF435AC6510613eD4Bc18b61', 18, 'WJNS', 'Wrapped JNS'), _WJNS);
 
 var _toSignificantRoundin, _toFixedRounding;
 var Decimal = /*#__PURE__*/toFormat(_Decimal);

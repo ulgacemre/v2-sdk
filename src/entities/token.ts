@@ -59,7 +59,7 @@ export function currencyEquals(currencyA: Currency, currencyB: Currency): boolea
 export const WJNS = {
   [ChainId.JANUS]: new Token(
     ChainId.JANUS,
-    '0x0a724DE47B01e2B8DAc55a022651D02326b26e3F',
+    '0x8d0fB1c0b97b7729bF435AC6510613eD4Bc18b61',
     18,
     'WJNS',
     'Wrapped JNS'
