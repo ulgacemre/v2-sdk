@@ -19,7 +19,7 @@ var IUniswapV2Pair = _interopDefault(require('@uniswap/v2-core/build/IUniswapV2P
 
 var _SOLIDITY_TYPE_MAXIMA;
 (function (ChainId) {
-  ChainId[ChainId["JANUS"] = 66987] = "JANUS";
+  ChainId[ChainId["JANUS"] = 66988] = "JANUS";
 })(exports.ChainId || (exports.ChainId = {}));
 (function (TradeType) {
   TradeType[TradeType["EXACT_INPUT"] = 0] = "EXACT_INPUT";
@@ -30,7 +30,7 @@ var _SOLIDITY_TYPE_MAXIMA;
   Rounding[Rounding["ROUND_HALF_UP"] = 1] = "ROUND_HALF_UP";
   Rounding[Rounding["ROUND_UP"] = 2] = "ROUND_UP";
 })(exports.Rounding || (exports.Rounding = {}));
-var FACTORY_ADDRESS = '0x2a6a22fd8A618A16DB300C11640c2e3cE9327a4F';
+var FACTORY_ADDRESS = '0x8CDd98Dadcdde57706698E6e41762a17b40dbdE5';
 var INIT_CODE_HASH = '0x6d35302494f4706c584e902f09e076a3d1c85caf3818818d6ca92eb0af8d1183';
 // Adjust min liquidity to 1
 var MINIMUM_LIQUIDITY = /*#__PURE__*/JSBI.BigInt(1);
